@@ -3,6 +3,7 @@ import PhotoAlbum from 'react-photo-album'
 import './Greetings.css'
 import photos from './photos'
 import Spinner from 'react-bootstrap/Spinner'
+import Message from './Message'
 
 function Greetings() {
   const [loading, setLoading] = useState(true)
@@ -18,11 +19,7 @@ function Greetings() {
   return (
     <div className='photo-container'>
       <div className='overlay'>
-        <h1>Happy Birthday!</h1>
-        <p>
-          Wishing you all the best on your special day. Enjoy your day with lots
-          of love, joy, and happiness!
-        </p>
+        <Message />
       </div>
       {loading ? (
         <div className='spinner-container'>
