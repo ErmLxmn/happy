@@ -1,42 +1,33 @@
+import React, { useState, useEffect, useRef } from 'react'
 import PhotoAlbum from 'react-photo-album'
 import './Greetings.css'
-import React, { useState, useEffect } from 'react'
-
-function importAll(r) {
-  return r.keys().map((key) => {
-    let image = new Image()
-    image.src = r(key)
-    return {
-      src: r(key),
-      width: 0,
-      height: 0,
-    }
-  })
-}
+import photos from './photos'
+import Spinner from 'react-bootstrap/Spinner'
 
 function Greetings() {
-  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [showAlbum, setShowAlbum] = useState(false)
 
   useEffect(() => {
-    const imagesArray = importAll(
-      require.context('./photos', false, /\.(png|jpe?g|svg|webp|jfif)$/)
-    )
-    setImages(imagesArray)
+    setTimeout(() => {
+      setLoading(false)
+      setShowAlbum(true)
+    }, 3000)
   }, [])
 
-  useEffect(() => {
-    images.forEach((image) => {
-      const img = new Image()
-      img.onload = () => {
-        image.width = img.width / 2
-        image.height = img.height / 2
-      }
-      img.src = image.src
-    })
-  }, [images])
   return (
     <div className='photo-container'>
-      <PhotoAlbum layout='columns' photos={images} />
+      {loading ? (
+        <div className='spinner-container'>
+          <Spinner animation='border' role='status'>
+            <span className='sr-only'>Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
+        <div style={{ display: showAlbum ? 'block' : 'none' }}>
+          <PhotoAlbum layout='columns' photos={photos} />
+        </div>
+      )}
     </div>
   )
 }

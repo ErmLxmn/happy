@@ -1,39 +1,44 @@
-// const images = require.context('./photos', true, /\.(jpg|jpeg|png|svg|webp)$/)
+function importAll(r) {
+  return r.keys().map((key) => {
+    let image = new Image()
+    image.src = r(key)
+    return {
+      src: r(key),
+      width: 0,
+      height: 0,
+    }
+  })
+}
 
-// const imageMetadata = images.keys().map((path) => {
-//   const image = images(path)
-//   const { width, height } = image.default
+let imagesArray = importAll(
+  require.context('./photos', false, /\.(png|jpe?g|svg|webp|jfif)$/)
+)
 
-//   return { path, width, height }
-// })
+imagesArray = imagesArray.map((image) => {
+  const img = new Image()
+  img.onload = () => {
+    image.width = img.width
+    image.height = img.height
+  }
+  img.src = image.src
 
-// console.log(imageMetadata)
+  return img
+})
 
 const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48]
-const costumPhotos = []
 
-// Object.values(images).map((src) => {
-//   let photo = {
-//     src: src,
-//     width: 1000,
-//     height: 720,
-//   }
-//   costumPhotos.push(photo)
-// })
-// const photos = costumPhotos.map((photo) => ({
-//   src: photo.src,
-//   width: photo.width,
-//   height: photo.height,
-//   images: breakpoints.map((breakpoint) => {
-//     const height = Math.round((photo.height / photo.width) * breakpoint)
-//     return {
-//       src: photo.src,
-//       width: breakpoint,
-//       height,
-//     }
-//   }),
-// }))
-
-const photos = []
+const photos = imagesArray.map((photo) => ({
+  src: photo.src,
+  width: photo.width,
+  height: photo.height,
+  images: breakpoints.map((breakpoint) => {
+    const height = Math.round((photo.height / photo.width) * breakpoint)
+    return {
+      src: photo.src,
+      width: breakpoint,
+      height,
+    }
+  }),
+}))
 
 export default photos
