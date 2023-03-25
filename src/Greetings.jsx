@@ -17,6 +17,13 @@ function Greetings() {
 
   return (
     <div className='photo-container'>
+      <div className='overlay'>
+        <h1>Happy Birthday!</h1>
+        <p>
+          Wishing you all the best on your special day. Enjoy your day with lots
+          of love, joy, and happiness!
+        </p>
+      </div>
       {loading ? (
         <div className='spinner-container'>
           <Spinner animation='border' role='status'>
@@ -25,7 +32,7 @@ function Greetings() {
         </div>
       ) : (
         <div style={{ display: showAlbum ? 'block' : 'none' }}>
-          <PhotoAlbum layout='columns' photos={photos} />
+          <PhotoAlbum layout='masonry' photos={photos} />
         </div>
       )}
     </div>
